@@ -82,6 +82,9 @@ mlir::Value genSecnds(fir::FirOpBuilder &builder, mlir::Location loc,
 /// generate time runtime call
 mlir::Value genTime(fir::FirOpBuilder &builder, mlir::Location loc);
 
+/// generate timef runtime call
+mlir::Value genTimef(fir::FirOpBuilder &builder, mlir::Location loc);
+
 /// generate runtime call to transfer intrinsic with no size argument
 void genTransfer(fir::FirOpBuilder &builder, mlir::Location loc,
                  mlir::Value resultBox, mlir::Value sourceBox,
@@ -111,11 +114,14 @@ void genSleep(fir::FirOpBuilder &builder, mlir::Location loc,
 mlir::Value genChdir(fir::FirOpBuilder &builder, mlir::Location loc,
                      mlir::Value name);
 
-
 mlir::Value genIrand(fir::FirOpBuilder &builder, mlir::Location loc,
                      mlir::Value i);
 mlir::Value genRand(fir::FirOpBuilder &builder, mlir::Location loc,
                     mlir::Value i);
+
+/// generate dump of a descriptor
+void genShowDescriptor(fir::FirOpBuilder &builder, mlir::Location loc,
+                       mlir::Value descriptor);
 
 } // namespace runtime
 } // namespace fir

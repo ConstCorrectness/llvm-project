@@ -387,7 +387,7 @@ int FTN_STDCALL FTN_CONTROL_TOOL(int command, int modifier, void *arg) {
 #else
   OMPT_STORE_RETURN_ADDRESS(__kmp_entry_gtid());
   if (!TCR_4(__kmp_init_middle)) {
-    return -2;
+    __kmp_middle_initialize();
   }
   kmp_info_t *this_thr = __kmp_threads[__kmp_entry_gtid()];
   ompt_task_info_t *parent_task_info = OMPT_CUR_TASK_INFO(this_thr);
@@ -1569,7 +1569,7 @@ int FTN_STDCALL KMP_EXPAND_NAME(FTN_GET_DEVICE_FROM_UID)(const char *device_uid)
 int FTN_STDCALL
 KMP_EXPAND_NAME(FTN_GET_DEVICE_FROM_UID)(const char *device_uid) {
 #if KMP_OS_DARWIN || KMP_OS_WASI || defined(KMP_STUB)
-  return omp_invalid_device;
+  return -2; // omp_invalid_device, see definition in omp.h
 #else
   int (*fptr)(const char *);
   if ((*(void **)(&fptr) = KMP_DLSYM_NEXT("omp_get_device_from_uid")))

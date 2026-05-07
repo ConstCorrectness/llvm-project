@@ -327,6 +327,14 @@ mlir::Value fir::runtime::genTime(fir::FirOpBuilder &builder,
       .getResult(0);
 }
 
+/// generate runtime call to timef intrinsic
+mlir::Value fir::runtime::genTimef(fir::FirOpBuilder &builder,
+                                   mlir::Location loc) {
+  auto func = fir::runtime::getRuntimeFunc<mkRTKey(Timef)>(loc, builder);
+  return fir::CallOp::create(builder, loc, func, mlir::ValueRange{})
+      .getResult(0);
+}
+
 /// generate runtime call to transfer intrinsic with no size argument
 void fir::runtime::genTransfer(fir::FirOpBuilder &builder, mlir::Location loc,
                                mlir::Value resultBox, mlir::Value sourceBox,
@@ -493,4 +501,11 @@ mlir::Value fir::runtime::genRand(fir::FirOpBuilder &builder,
   llvm::SmallVector<mlir::Value> args = fir::runtime::createArguments(
       builder, loc, runtimeFuncTy, i, sourceFile, sourceLine);
   return fir::CallOp::create(builder, loc, runtimeFunc, args).getResult(0);
+}
+
+void fir::runtime::genShowDescriptor(fir::FirOpBuilder &builder,
+                                     mlir::Location loc, mlir::Value descAddr) {
+  mlir::func::FuncOp func{
+      fir::runtime::getRuntimeFunc<mkRTKey(ShowDescriptor)>(loc, builder)};
+  fir::CallOp::create(builder, loc, func, descAddr);
 }
